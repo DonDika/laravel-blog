@@ -22,7 +22,7 @@
                         <tbody>
                             @foreach ($postData as $key => $value)
                             <tr>
-                                <td class="border px-6 py-4 text-center">{{ $loop->iteration }}</td>
+                                <td class="border px-6 py-4 text-center">{{ $postData->firstItem() + $key }}</td>
                                 <td class="border px-6 py-4">
                                     {{ $value->title }}
                                     <div class="block lg:hidden text-sm text-gray-500">
@@ -43,6 +43,12 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="p-5">
+                    {{ $postData->links() }}
+
+                </div>
+
             </div>
         </div>
     </div>
