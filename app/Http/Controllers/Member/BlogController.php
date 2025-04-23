@@ -52,10 +52,15 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Post $blog)
     {
-        //
+        //print_r($post);
+        //dd($post);
+        $postData = $blog;
+        return view('member.blogs.edit', compact('postData'));
     }
+
+        
 
     /**
      * Update the specified resource in storage.
