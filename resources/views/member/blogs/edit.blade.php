@@ -19,7 +19,7 @@
                             </p>
                         </header>
 
-                        <form method="post" action="" class="mt-6 space-y-6" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('member.blogs.update', ['blog'=>$postData->id]) }}" class="mt-6 space-y-6" enctype="multipart/form-data">
                             @csrf
                             {{-- karna akan melakukan update maka menggunakan put --}}
                             @method('put')
@@ -46,19 +46,16 @@
 
                             <div>
                                 <x-input-label for="file_input" value="Thumbnail" />
-                                <input type="file" class="w-full border border-gray-300 rounded-md">
+                                <input type="file" name="thumbnail" class="w-full border border-gray-300 rounded-md">
                             </div>
 
                             <div>
-                                <input id="x" type="hidden" name="content" 
-                                    value="{!! old('key', $postData->content) !!}"
-                                >
-                                <trix-editor input="x" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm min-h-80">
-                                </trix-editor>
+                                <x-textarea-trix id="x" name="content" value="{!! old('content',$postData->content) !!}">
+                                </x-textarea-trix>
                             </div>
 
                             <div>
-                                <select name="status" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                <x-select name="status">
                                     <option value="draft"
                                         {{ (old('status', $postData->status)=='draft')?'selected':'' }}>
                                         Simpan Sebagai Draft
@@ -67,7 +64,7 @@
                                         {{ (old('status', $postData->status)=='publish')?'selected':'' }}>
                                         Publish
                                     </option>
-                                </select>
+                                </x-select>
                             </div>
 
                             <div class="flex items-center gap-4">

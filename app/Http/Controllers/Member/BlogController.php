@@ -65,9 +65,21 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $blog)
     {
         //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'thumbnail' => 'image|mimes:jpeg,jpg,png|max:10240'
+        ],[
+            'title.required' => 'Judul wajib diisi',
+            'content.required' => 'Konten wajib diisi',
+            'thumbnail.image' => 'Hanya gambar yang diperbolehkan',
+            'thumbnail.mimes' => 'Ekstensi yang diperbolehkan hanya jpeg, jpg, png',
+            'thumbnail.max' => 'Ukuran maksimum untuk thumbnail 10MB'
+        ]);
+        
     }
 
     /**
