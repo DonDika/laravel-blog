@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Member;
 
-use App\Http\Controllers\Controller;
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
@@ -102,7 +103,8 @@ class BlogController extends Controller
             'description' => $request->description,
             'content' => $request->content,
             'status' => $request->status,
-            'thumbnail' => isset($image_name) ? $image_name: $post->thumbnail 
+            'thumbnail' => isset($image_name) ? $image_name: $post->thumbnail,
+            'slug'=> $this->generateSlug($request->title, $post->id)
         ];
 
         Post::where('id', $post->id)
@@ -121,4 +123,21 @@ class BlogController extends Controller
     {
         //
     }
+
+    private function generateSlug($title, $id)
+    {
+        $slug = Str::slug($title);
+        $count = Post::where('slug', $slug)
+                    ->when($id, function($query, $id){
+                        return $query->where('id', '!=', $id);
+                    })
+                    ->count();
+        if($count > 0){
+            $slug = $slug."-".($count+1);
+        
+        }
+
+        return $slug;
+    }
+
 }
