@@ -19,7 +19,7 @@
                             </p>
                         </header>
 
-                        <form method="post" action="{{ route('member.blogs.update', ['blog'=>$postData->id]) }}" class="mt-6 space-y-6" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('member.blogs.update', ['post'=>$postData->id]) }}" class="mt-6 space-y-6" enctype="multipart/form-data">
                             @csrf
                             {{-- karna akan melakukan update maka menggunakan put --}}
                             @method('put')

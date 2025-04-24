@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -22,7 +23,7 @@ class BlogController extends Controller
         
         //menampilkan data di view blade     
         return view('member.blogs.index', compact('postData'));
-    
+
     }
 
     /**
@@ -52,11 +53,11 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $blog)
+    public function edit(Post $post)
     {
         //print_r($post);
         //dd($post);
-        $postData = $blog;
+        $postData = $post;
         return view('member.blogs.edit', compact('postData'));
     }
 
@@ -65,7 +66,7 @@ class BlogController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $blog)
+    public function update(Request $request, Post $post)
     {
         //
         $request->validate([
@@ -79,7 +80,18 @@ class BlogController extends Controller
             'thumbnail.mimes' => 'Ekstensi yang diperbolehkan hanya jpeg, jpg, png',
             'thumbnail.max' => 'Ukuran maksimum untuk thumbnail 10MB'
         ]);
-        
+
+        //menyimpan data
+        $updatePostData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'content' => $request->content,
+            'status' => $request->status
+        ];
+
+        Post::where('id', $post->id)->update($updatePostData);
+        return redirect()->route('member.blogs.index')->with('success', 'Data berhasil di-update');
+
     }
 
     /**

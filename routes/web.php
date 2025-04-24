@@ -20,14 +20,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //blog route
-    //Route::get('/member/blogs', [BlogController::class, 'index']);
-    //Route::get('/member/blogs/{post}/edit', [BlogController::class, 'edit']);
-
-    Route::resource("/member/blogs", BlogController::class)->names([
+    Route::resource("/member/blogs", BlogController::class)
+    ->names([
         'index' => 'member.blogs.index',
         'edit' => 'member.blogs.edit',
         'update' => 'member.blogs.update'
-    ]);
+    ])
+    ->parameters(['blogs' => 'post']);
+    
 
 });
 
