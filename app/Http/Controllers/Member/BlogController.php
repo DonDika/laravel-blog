@@ -35,6 +35,7 @@ class BlogController extends Controller
         return view('member.blogs.index', compact('postData'));
     }
 
+    
     /**
      * Show the form for creating a new resource.
      */
@@ -42,6 +43,7 @@ class BlogController extends Controller
     {
         return view('member.blogs.create');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -85,6 +87,7 @@ class BlogController extends Controller
         
     }
 
+
     /**
      * Display the specified resource.
      */
@@ -92,6 +95,7 @@ class BlogController extends Controller
     {
         //
     }
+
 
     /**
      * Show the form for editing the specified resource.
