@@ -154,7 +154,15 @@ class BlogController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        //hapus image
+        if (isset($post->thumbnail) && file_exists(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail)) {
+            unlink(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail);
+        }
+
+        Post::where('id',$post->id)->delete();
+        return redirect()
+                ->route('member.blogs.index')
+                ->with('success','Data berhasil dihabpus');
     }
 
 

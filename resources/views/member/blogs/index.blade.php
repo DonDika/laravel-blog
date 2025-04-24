@@ -45,9 +45,18 @@
                                         class="text-blue-600 hover:text-blue-400 px-2">
                                         lihat
                                     </a>
-                                    <button type='submit' class='text-red-600 hover:text-red-400 px-2'>
-                                        hapus
-                                    </button>
+
+                                    <form class="inline"
+                                            method="post"
+                                            onsubmit="return confirm('Apakah yakin untuk menghapus data ini?')" 
+                                            action="{{ route('member.blogs.destroy', ['post'=>$value->id]) }}">
+                                            @csrf
+                                            @method('delete')
+                                        <button type='submit' class='text-red-600 hover:text-red-400 px-2'>
+                                            hapus
+                                        </button>
+                                    </form>
+
                                 </td>
                             </tr>
                             @endforeach
