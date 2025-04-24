@@ -81,16 +81,36 @@ class BlogController extends Controller
             'thumbnail.max' => 'Ukuran maksimum untuk thumbnail 10MB'
         ]);
 
+
+        //thumbnail
+        if ($request->hasFile('thumbnail')) {
+            //mengganti image dengan yg baru
+            if (isset($post->thumbnail) && file_exists(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail)) {
+                unlink(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail);
+            }
+            $image = $request->file('thumbnail');
+            $image_name = time() . "_" . $image->getClientOriginalName();
+            //menyimpan file image di public path
+            $destination_path = public_path(getenv('CUSTOM_THUMBNAIL_LOCATION'));
+            $image->move($destination_path, $image_name);
+        }
+
+
         //menyimpan data
         $updatePostData = [
             'title' => $request->title,
             'description' => $request->description,
             'content' => $request->content,
-            'status' => $request->status
+            'status' => $request->status,
+            'thumbnail' => isset($image_name) ? $image_name: $post->thumbnail 
         ];
 
-        Post::where('id', $post->id)->update($updatePostData);
-        return redirect()->route('member.blogs.index')->with('success', 'Data berhasil di-update');
+        Post::where('id', $post->id)
+            ->update($updatePostData);
+
+        return redirect()
+            ->route('member.blogs.index')
+            ->with('success', 'Data berhasil di-update');
 
     }
 

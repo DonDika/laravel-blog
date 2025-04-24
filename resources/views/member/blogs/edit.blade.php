@@ -45,6 +45,10 @@
                             </div>
 
                             <div>
+                                @isset($postData->thumbnail)
+                                    <img src="{{ asset(getenv('CUSTOM_THUMBNAIL_LOCATION').'/'.$postData->thumbnail) }}"
+                                        class="rounded-md border-gray-300 max-w-40 p-2">
+                                @endisset
                                 <x-input-label for="file_input" value="Thumbnail" />
                                 <input type="file" name="thumbnail" class="w-full border border-gray-300 rounded-md">
                             </div>
