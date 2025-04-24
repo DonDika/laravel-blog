@@ -32,7 +32,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return view('member.blogs.create');
     }
 
     /**
@@ -40,7 +40,41 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'thumbnail' => 'image|mimes:jpeg,jpg,png|max:10240'
+        ],[
+            'title.required' => 'Judul wajib diisi',
+            'content.required' => 'Konten wajib diisi',
+            'thumbnail.image' => 'Hanya gambar yang diperbolehkan',
+            'thumbnail.mimes' => 'Ekstensi yang diperbolehkan hanya jpeg, jpg, png',
+            'thumbnail.max' => 'Ukuran maksimum untuk thumbnail 10MB'
+        ]);
+
+        if($request->hasFile('thumbnail')){
+            $image = $request->file('thumbnail');
+            $imageName = time(). "-" .$image->getClientOriginalName();
+            $destinationPath = public_path(getenv('CUSTOM_THUMBNAIL_LOCATION'));
+            $image->move($destinationPath, $imageName);
+        }
+
+        $createPostData = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'content'=> $request->content,
+            'status'=> $request->status,
+            'thumbnail'=> isset($imageName) ? $imageName : null,
+            'slug'=> $this->generateSlug($request->title),
+            'user_id' => Auth::user()->id
+        ];
+
+        Post::create($createPostData);
+
+        return redirect()
+                ->route('member.blogs.index')
+                ->with('success', 'Data berhasil ditambahkan');
+        
     }
 
     /**
@@ -69,7 +103,6 @@ class BlogController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
         $request->validate([
             'title' => 'required',
             'content' => 'required',
@@ -108,11 +141,11 @@ class BlogController extends Controller
         ];
 
         Post::where('id', $post->id)
-            ->update($updatePostData);
+                ->update($updatePostData);
 
         return redirect()
-            ->route('member.blogs.index')
-            ->with('success', 'Data berhasil di-update');
+                ->route('member.blogs.index')
+                ->with('success', 'Data berhasil di-update');
 
     }
 
@@ -124,7 +157,8 @@ class BlogController extends Controller
         //
     }
 
-    private function generateSlug($title, $id)
+
+    private function generateSlug($title, $id = null)
     {
         $slug = Str::slug($title);
         $count = Post::where('slug', $slug)
