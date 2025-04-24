@@ -8,23 +8,31 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+
 class BlogController extends Controller
 {
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //menampilkan data berdasarkan user yg login
         $user = Auth::user();
-        $postData = Post::where('user_id',$user->id)
-                ->orderBy('id', 'desc')
-                ->paginate(3);
-        
-        //menampilkan data di view blade     
-        return view('member.blogs.index', compact('postData'));
+        $search = $request->search;
 
+        $postData = Post::where('user_id',$user->id)
+                ->where(function($query) use ($search){
+                    if($search){
+                        $query->where('title', 'like', "%{$search}%")
+                                ->orWhere('content', 'like',"%{$search}%");
+                    }
+                })
+                ->orderBy('id', 'desc')
+                ->paginate(10)
+                ->withQueryString();
+         
+        return view('member.blogs.index', compact('postData'));
     }
 
     /**
@@ -154,7 +162,7 @@ class BlogController extends Controller
      */
     public function destroy(Post $post)
     {
-        //hapus image
+        //delete image
         if (isset($post->thumbnail) && file_exists(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail)) {
             unlink(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail);
         }
@@ -162,7 +170,7 @@ class BlogController extends Controller
         Post::where('id',$post->id)->delete();
         return redirect()
                 ->route('member.blogs.index')
-                ->with('success','Data berhasil dihabpus');
+                ->with('success','Data berhasil dihapus');
     }
 
 
