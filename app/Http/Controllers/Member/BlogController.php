@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Gate;
 
 class BlogController extends Controller
 {
@@ -35,7 +35,7 @@ class BlogController extends Controller
         return view('member.blogs.index', compact('postData'));
     }
 
-    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -102,13 +102,13 @@ class BlogController extends Controller
      */
     public function edit(Post $post)
     {
-        //print_r($post);
-        //dd($post);
+        //auth, orang yg sama yg membuat tulisannya
+        Gate::authorize('edit',$post);
         $postData = $post;
         return view('member.blogs.edit', compact('postData'));
     }
-
-        
+    
+    
 
     /**
      * Update the specified resource in storage.
@@ -166,6 +166,7 @@ class BlogController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize('delete',$post);
         //delete image
         if (isset($post->thumbnail) && file_exists(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail)) {
             unlink(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail);
