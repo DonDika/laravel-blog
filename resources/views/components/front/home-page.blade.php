@@ -18,8 +18,24 @@
                 @endforeach
                
                 <!-- Pager-->
-                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts
-                        →</a></div>
+                <div class="d-flex justify-content-between mb-4">
+                    <div>
+                        @if (!$postData->onFirstPage())
+                            <a class="btn btn-primary text-uppercase" href="{{ $postData->previousPageUrl() }}">
+                                &larr; Previous Posts 
+                            </a>
+                        @endif
+                    </div>
+
+                    <div>
+                        @if ($postData->hasMorePages())
+                            <a class="btn btn-primary text-uppercase" href="{{ $postData->nextPageUrl() }}">
+                                Older Posts &rarr;
+                            </a>
+                        @endif
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
