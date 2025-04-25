@@ -1,12 +1,15 @@
 <?php
 
+use App\Http\Controllers\Front\HomePageController;
 use App\Http\Controllers\Member\BlogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('components.front.home-page');
-});
+// Route::get('/', function () {
+//     return view('components.front.home-page');
+// });
+
+Route::get('/',[HomePageController::class, 'index']);
 
 
 Route::get('/dashboard', function () {
