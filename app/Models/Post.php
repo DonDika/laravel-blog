@@ -18,4 +18,12 @@ class Post extends Model
         'thumbnail',
         'user_id'
     ];
+
+    //dari tabel Post relasi ke tabel User, 
+    //untuk access data yg ada di tabel User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

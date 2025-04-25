@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Front\DetailPageController;
 use App\Http\Controllers\Front\HomePageController;
 use App\Http\Controllers\Member\BlogController;
 use App\Http\Controllers\ProfileController;
@@ -10,6 +11,9 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/',[HomePageController::class, 'index']);
+
+Route::get('/{slug}', [DetailPageController::class, 'detail'])->name('blog-detail');
+
 
 
 Route::get('/dashboard', function () {
@@ -41,6 +45,7 @@ Route::middleware('auth')->group(function () {
 
 
 require __DIR__.'/auth.php';
+
 
 
 

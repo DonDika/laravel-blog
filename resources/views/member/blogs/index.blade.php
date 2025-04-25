@@ -38,15 +38,21 @@
                         <tbody>
                             @foreach ($postData as $key => $value)
                             <tr>
-                                <td class="border px-6 py-4 text-center">{{ $postData->firstItem() + $key }}</td>
+                                <td class="border px-6 py-4 text-center">
+                                    {{ $postData->firstItem() + $key }}
+                                </td>
                                 <td class="border px-6 py-4">
                                     {{ $value->title }}
                                     <div class="block lg:hidden text-sm text-gray-500">
                                         {{ $value->status }} | {{ $value->created_at->isoFormat('dddd, D MMMM Y') }}
                                     </div>
                                 </td>
-                                <td class="border px-6 py-4 text-center text-gray-500 text-sm hidden lg:table-cell">{{ $value->created_at->isoFormat('dddd, D MMMM Y') }}</td>
-                                <td class="border px-6 py-4 text-center text-sm hidden lg:table-cell">{{ $value->status }}</td>
+                                <td class="border px-6 py-4 text-center text-gray-500 text-sm hidden lg:table-cell">
+                                    {{ $value->created_at->isoFormat('dddd, D MMMM Y') }}
+                                </td>
+                                <td class="border px-6 py-4 text-center text-sm hidden lg:table-cell">
+                                    {{ $value->status }}
+                                </td>
                                 <td class="border px-6 py-4 text-center">
                                     <a href='{{ route("member.blogs.edit", ["post"=> $value->id]) }}' 
                                         class="text-blue-600 hover:text-blue-400 px-2">
@@ -67,7 +73,6 @@
                                             hapus
                                         </button>
                                     </form>
-
                                 </td>
                             </tr>
                             @endforeach
