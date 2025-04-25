@@ -25,10 +25,8 @@ Route::middleware('auth')->group(function () {
         'index' => 'member.blogs.index',
         'edit' => 'member.blogs.edit',
         'update' => 'member.blogs.update',
-
         'create' => 'member.blogs.create',
         'store' => 'member.blogs.store',
-
         'destroy' => 'member.blogs.destroy'
     ])
     ->parameters([
