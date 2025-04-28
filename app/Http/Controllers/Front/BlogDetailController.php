@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 
 
-class DetailPageController extends Controller
+class BlogDetailController extends Controller
 {
     // Data parameter didapatkan dari route parameter URL, 
     // jika parameter URL hanya 1, maka parameter function juga hanya bisa 1

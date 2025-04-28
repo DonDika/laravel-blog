@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Front\DetailPageController;
-use App\Http\Controllers\Front\HomePageController;
-use App\Http\Controllers\Front\PageDetailController;
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Member\BlogController;
 use App\Http\Controllers\Member\PageController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Front\HomePageController;
+use App\Http\Controllers\Front\BlogDetailController;
+use App\Http\Controllers\Front\PageDetailController;
 
 
 Route::get('/',[HomePageController::class, 'index']);
@@ -54,7 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/{slug}', [DetailPageController::class, 'detail'])->name('blog-detail');
+Route::get('/{slug}', [BlogDetailController::class, 'detail'])->name('blog-detail');
 
 Route::get('/page/{slug}', [PageDetailController::class, 'detail'])->name('page-detail');
 
