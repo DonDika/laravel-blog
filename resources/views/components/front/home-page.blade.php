@@ -1,7 +1,7 @@
 
 <x-front.layout>
 
-    <!-- Variable-->
+    <!-- variable -->
     <x-slot name="pageHeader">
         {{ $lastData->title }}
     </x-slot>
@@ -16,12 +16,12 @@
     </x-slot>
 
 
-    <!-- Main Content-->
+    <!-- Main Content -->
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
 
-                <!-- Data dynamic dimasukkan ke komponen -->
+                <!-- data dynamic dikirimkan ke component melalui props -->
                 @foreach ($postData as $key => $value)
                     <x-front.blog-list
                         title="{{ $value->title }}"
@@ -32,7 +32,7 @@
                     /> 
                 @endforeach
                
-                <!-- Pager-->
+                <!-- Pager -->
                 <div class="d-flex justify-content-between mb-4">
                     <div>
                         @if (!$postData->onFirstPage())

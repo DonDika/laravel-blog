@@ -58,7 +58,7 @@
                                         class="text-blue-600 hover:text-blue-400 px-2">
                                         edit
                                     </a>    
-                                    <a href='' 
+                                    <a href='{{ route('blog-detail',["slug"=>$value->slug]) }}' 
                                         class="text-blue-600 hover:text-blue-400 px-2">
                                         lihat
                                     </a>

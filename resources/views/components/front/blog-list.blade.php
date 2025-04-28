@@ -1,7 +1,8 @@
 
+<!-- parsing data -->
 @props(['title','description','date','user','link'])
 
-<!-- Post preview-->
+<!-- post preview -->
 <div class="post-preview">
     <a href="{{ $link }}">
         <h2 class="post-title">
