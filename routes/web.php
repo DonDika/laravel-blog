@@ -2,17 +2,14 @@
 
 use App\Http\Controllers\Front\DetailPageController;
 use App\Http\Controllers\Front\HomePageController;
+use App\Http\Controllers\Front\PageDetailController;
 use App\Http\Controllers\Member\BlogController;
+use App\Http\Controllers\Member\PageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
-//     return view('components.front.home-page');
-// });
 
 Route::get('/',[HomePageController::class, 'index']);
-
-
 
 
 Route::get('/dashboard', function () {
@@ -38,8 +35,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ->parameters([
         'blogs' => 'post'
     ]);
-    
 
+    //page route
+    Route::resource("/member/pages", PageController::class)
+    ->names([
+        'index' => 'member.pages.index',
+        'edit' => 'member.pages.edit',
+        'update' => 'member.pages.update',
+        'create' => 'member.pages.create',
+        'store' => 'member.pages.store',
+        'destroy' => 'member.pages.destroy'
+    ])
+    ->parameters([
+        'pages' => 'post'
+    ]);
 });
 
 
@@ -47,5 +56,6 @@ require __DIR__.'/auth.php';
 
 Route::get('/{slug}', [DetailPageController::class, 'detail'])->name('blog-detail');
 
+Route::get('/page/{slug}', [PageDetailController::class, 'detail'])->name('page-detail');
 
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Http\Request;
+
 
 class DetailPageController extends Controller
 {
@@ -14,6 +14,7 @@ class DetailPageController extends Controller
     public function detail($slug){
         //mencari data ke database
         $detailData = Post::where('status', operator: 'publish')
+                        ->where('type', 'blog')
                         ->where('slug',$slug)
                         ->firstOrFail();
 
@@ -27,10 +28,12 @@ class DetailPageController extends Controller
     private function pagination($id)
     {
         $dataPrev = Post::where('status', 'publish')
+                        ->where('type', 'blog')
                         ->where('id', '<', $id)
                         ->orderBy('id', 'desc')
                         ->first();
         $dataNext = Post::where('status', 'publish')
+                        ->where('type', 'blog')
                         ->where('id','>',$id)
                         ->orderBy('id', 'desc')
                         ->first();

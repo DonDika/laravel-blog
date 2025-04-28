@@ -10,9 +10,10 @@ class HomePageController extends Controller
 {
     public function index()
     {
-        $lastData = $this->displayLatesData();
+        $lastData = $this->displayLatestData();
 
         $postData = Post::where('status','publish')
+                    ->where('type','blog')
                     ->where('id','!=',$lastData->id)
                     ->orderBy('id', 'desc')
                     ->paginate('5');
@@ -20,9 +21,10 @@ class HomePageController extends Controller
         return view('components.front.home-page', compact('postData','lastData'));
     }
 
-    private function displayLatesData()
+    private function displayLatestData()
     {
         $data = Post::where('status', 'publish')
+                ->where('type','blog')
                 ->orderBy('id', 'desc')
                 ->latest()
                 ->first();

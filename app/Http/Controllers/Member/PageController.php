@@ -7,12 +7,12 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
-class BlogController extends Controller
+
+class PageController extends Controller
 {
 
-    protected $type = 'blog';
+    protected $type = 'page';
 
 
     /**
@@ -24,8 +24,7 @@ class BlogController extends Controller
         $user = Auth::user();
         $search = $request->search;
 
-        $postData = Post::where('user_id',$user->id)
-                ->where('type',$this->type)
+        $postData = Post::where('type',$this->type)
                 ->where(function($query) use ($search){
                     if($search){
                         $query->where('title', 'like', "%{$search}%")
@@ -36,7 +35,7 @@ class BlogController extends Controller
                 ->paginate(10)
                 ->withQueryString();
          
-        return view('member.blogs.index', compact('postData'));
+        return view('member.pages.index', compact('postData'));
     }
 
 
@@ -45,7 +44,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        return view('member.blogs.create');
+        return view('member.pages.create');
     }
 
 
@@ -87,7 +86,7 @@ class BlogController extends Controller
         Post::create($createPostData);
 
         return redirect()
-                ->route('member.blogs.index')
+                ->route('member.pages.index')
                 ->with('success', 'Data berhasil ditambahkan');
     }
 
@@ -106,15 +105,12 @@ class BlogController extends Controller
      */
     public function edit(Post $post)
     {
-        if($post->type != $this->type){
-            return redirect()->route('member.blogs.index');
+        if ($post->type != $this->type) {
+            return redirect()->route('member.pages.index');
         }
 
-        //auth, orang yg sama yg membuat tulisannya
-        Gate::authorize('edit',$post);
-
         $postData = $post;
-        return view('member.blogs.edit', compact('postData'));
+        return view('member.pages.edit', compact('postData'));
     }
     
     
@@ -163,7 +159,7 @@ class BlogController extends Controller
                 ->update($updatePostData);
 
         return redirect()
-                ->route('member.blogs.index')
+                ->route('member.pages.index')
                 ->with('success', 'Data berhasil di-update');
     }
 
@@ -172,7 +168,6 @@ class BlogController extends Controller
      */
     public function destroy(Post $post)
     {
-        Gate::authorize('delete',$post);
         //delete image
         if (isset($post->thumbnail) && file_exists(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail)) {
             unlink(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION')).'/'.$post->thumbnail);
@@ -181,7 +176,7 @@ class BlogController extends Controller
         Post::where('id',$post->id)
                 ->where('type', $this->type)
                 ->delete();
-        return redirect()->route('member.blogs.index')->with('success','Data berhasil dihapus');
+        return redirect()->route('member.pages.index')->with('success','Data berhasil dihapus');
     }
 
 

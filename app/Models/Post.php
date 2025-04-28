@@ -16,7 +16,8 @@ class Post extends Model
         'content',
         'status',
         'thumbnail',
-        'user_id'
+        'user_id',
+        'type'
     ];
 
     //dari tabel Post relasi ke tabel User, 
