@@ -10,7 +10,7 @@ class HomePageController extends Controller
 {
     public function index()
     {
-        $lastData = $this->lastData();
+        $lastData = $this->displayLatesData();
 
         $postData = Post::where('status','publish')
                     ->where('id','!=',$lastData->id)
@@ -20,7 +20,7 @@ class HomePageController extends Controller
         return view('components.front.home-page', compact('postData','lastData'));
     }
 
-    private function lastData()
+    private function displayLatesData()
     {
         $data = Post::where('status', 'publish')
                 ->orderBy('id', 'desc')
