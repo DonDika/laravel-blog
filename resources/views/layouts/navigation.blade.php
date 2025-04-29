@@ -22,6 +22,9 @@
                     <x-nav-link :href="route('member.pages.index')" :active="request()->routeIs('member.pages.*')">
                         Pages
                     </x-nav-link>
+                    <x-nav-link :href="route('member.users.index')" :active="request()->routeIs('member.users.*')">
+                        Users
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -85,6 +88,10 @@
 
             <x-responsive-nav-link :href="route('member.pages.index')" :active="request()->routeIs('member.pages.*')">
                 Pages
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('member.users.index')" :active="request()->routeIs('member.users.*')">
+                Users
             </x-responsive-nav-link>
         </div>
 

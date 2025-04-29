@@ -5,9 +5,13 @@
         </h2>
     </x-slot>
     <x-slot name="headerRight">
-        <form action="" method="get">
-            <x-text-input id="search" name="search" type="text" class="p-1 m-0 md:w-72 w-80 mt-3 md:mt-0" value=""
-                placeholder="masukkan kata kunci..." />
+        <form method="get" action="{{ route('member.users.index') }}">
+            <x-text-input id="search" 
+                            name="search" 
+                            type="text" 
+                            class="p-1 m-0 md:w-72 w-80 mt-3 md:mt-0"
+                            placeholder="masukkan kata kunci..." 
+                            value="{{ request('search') }}"/>
             <x-secondary-button class="p-1" type="submit">cari</x-secondary-button>
         </form>
     </x-slot>
@@ -18,6 +22,7 @@
             <div class="bg-white shadow-sm sm:rounded-lg overflow-x-auto">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <table class="w-full whitespace-no-wrapw-full whitespace-no-wrap table-fixed">
+                        <!-- nama kolom -->
                         <thead>
                             <tr class="text-center font-bold">
                                 <td class="border px-6 py-4 w-[80px]">No</td>
@@ -28,14 +33,22 @@
                                 <td class="border px-6 py-4 lg:w-[200px] w-[100px]">Aksi</td>
                             </tr>
                         </thead>
-                        <tbody>
 
+                        <!-- isian kolom, di-looping -->
+                        <tbody>
                             @foreach ($userData as $key => $value)
                                 <tr>
-                                    <td class="border px-6 py-4">1</td>
+                                    <td class="border px-6 py-4">
+                                        {{ $userData->firstItem() + $key }}
+                                    </td>
+
                                     <td class="border px-6 py-4">
                                         <div>{{ $value->name }}</div>
-                                        <div class="block lg:hidden text-sm text-gray-500">verifikasi email: sudah</div>
+                                        <div class="text-sm text-gray-500">{{ $value->email }}</div>
+                                        <div class="block lg:hidden text-sm text-gray-500">
+                                            {{ $value->created_at->isoFormat('dddd, D MMMM Y') }}
+                                            | verifikasi email: {{ $value->email_verified_at != null ? 'sudah' : '-' }}
+                                        </div>
                                         <div class="block lg:hidden text-sm text-gray-500">
                                             Block:
                                             <a href="">
@@ -45,29 +58,38 @@
                                     </td>
 
                                     <td class="border px-6 py-4 text-gray-500 text-sm text-center hidden lg:table-cell">
-                                        17 Agustus 2024
+                                        {{ $value->created_at->isoFormat('dddd, D MMMM Y') }}
                                     </td>
+
                                     <td class="border px-6 py-4 text-gray-500 text-sm text-center hidden lg:table-cell">
-                                        sudah
+                                        {{ $value->email_verified_at != null ? 'sudah' : '-' }}
                                     </td>
+
                                     <td class="border px-6 py-4 text-gray-500 text-sm text-center hidden lg:table-cell">
                                         <a href="">
                                             <span class="text-blue-600">tidak</span>
                                         </a>
                                     </td>
+
                                     <td class="border px-6 py-4 text-center">
-                                        <a href="" class="text-blue-600 hover:text-blue-400 px-2">edit</a>
-                                        <form class="inline" onsubmit="return confirm('Yakin mau hapus data ini?')"
-                                            action="" method="post">
+                                        <a class="text-blue-600 hover:text-blue-400 px-2" 
+                                            href="{{ route('member.users.edit',['user'=>$value->id]) }}">
+                                            edit
+                                        </a>
+                                        <form class="inline"
+                                                method="POST" 
+                                                onsubmit="return confirm('Yakin mau hapus data ini?')"
+                                                action="{{ route('member.users.destroy',['user'=>$value->id]) }}">
+                                                @csrf
+                                                @method('delete')
                                             <button type='submit' class='text-red-600 hover:text-red-400 px-2'>
                                                 hapus
                                             </button>
                                         </form>
                                     </td>
+                                    
                                 </tr>
                             @endforeach
-
-
                         </tbody>
                     </table>
                 </div>
