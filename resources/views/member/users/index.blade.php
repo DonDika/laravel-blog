@@ -2,7 +2,7 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Pengaturan Users 
-            <a class="bg-blue-400 p-2 rounded-md text-white text-sm " href="">
+            <a class="bg-blue-400 p-2 rounded-md text-white text-sm " href="{{ route('member.users.create') }}">
                 Add User
             </a>
         </h2>

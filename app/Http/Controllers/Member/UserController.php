@@ -33,7 +33,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('member.users.create');
     }
 
     /**
@@ -41,7 +41,35 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|same:password_confirmation|required_with:password_confirmation',
+            'password_confirmation' => 'required_with:password'
+
+        ],[
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.email' => 'Format email '.$request->email.' tidak sesuai',
+            'email.unique' => 'Email sudah digunakan, silahkan gunakan email yang lain',
+            'password.required_with' => 'Password belum diisi',
+            'password_confirmation.required_with' => 'Konfirmasi password belum diisi'
+        ]);
+
+        $verifiedEmail = $request->email_verified_at ? Carbon::now() : null;
+
+        $createUserData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'email_verified_at' => $verifiedEmail,
+            'password' => bcrypt($request->password)
+        ];
+
+        User::create($createUserData);
+
+        return redirect()->route('member.users.index')->with('success','Data user berhasil ditambahkan');
+
+
     }
 
     /**
