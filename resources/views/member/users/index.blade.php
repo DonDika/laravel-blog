@@ -1,17 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Pengaturan Users <a href="" class="bg-blue-400 p-2 rounded-md text-white text-sm">+ Tambah User</a>
+            Pengaturan Users 
+            <a class="bg-blue-400 p-2 rounded-md text-white text-sm " href="">
+                Add User
+            </a>
         </h2>
     </x-slot>
     <x-slot name="headerRight">
         <form method="get" action="{{ route('member.users.index') }}">
-            <x-text-input id="search" 
-                            name="search" 
-                            type="text" 
-                            class="p-1 m-0 md:w-72 w-80 mt-3 md:mt-0"
-                            placeholder="masukkan kata kunci..." 
-                            value="{{ request('search') }}"/>
+            <x-text-input id="search" name="search" type="text" class="p-1 m-0 md:w-72 w-80 mt-3 md:mt-0"
+                placeholder="masukkan kata kunci..." value="{{ request('search') }}" />
             <x-secondary-button class="p-1" type="submit">cari</x-secondary-button>
         </form>
     </x-slot>
@@ -51,7 +50,7 @@
                                         </div>
                                         <div class="block lg:hidden text-sm text-gray-500">
                                             Block:
-                                            <a href="{{ route('member.users.toggle-block',['user'=>$value->id]) }}">
+                                            <a href="{{ route('member.users.toggle-block', ['user' => $value->id]) }}">
                                                 @if ($value->blocked_at == null)
                                                     <span class="text-blue-600">tidak</span>
                                                 @else
@@ -70,32 +69,31 @@
                                     </td>
 
                                     <td class="border px-6 py-4 text-gray-500 text-sm text-center hidden lg:table-cell">
-                                        <a href="{{ route('member.users.toggle-block',parameters: ['user'=>$value->id]) }}">
+                                        <a href="{{ route('member.users.toggle-block', parameters: ['user' => $value->id]) }}">
                                             @if ($value->blocked_at == null)
                                                 <span class="text-blue-600">tidak</span>
-                                            @else 
+                                            @else
                                                 <span class="text-red-600">ya</span>
                                             @endif
                                         </a>
                                     </td>
 
                                     <td class="border px-6 py-4 text-center">
-                                        <a class="text-blue-600 hover:text-blue-400 px-2" 
-                                            href="{{ route('member.users.edit',['user'=>$value->id]) }}">
+                                        <a class="text-blue-600 hover:text-blue-400 px-2"
+                                            href="{{ route('member.users.edit', ['user' => $value->id]) }}">
                                             edit
                                         </a>
-                                        <form class="inline"
-                                                method="POST" 
-                                                onsubmit="return confirm('Yakin mau hapus data ini?')"
-                                                action="{{ route('member.users.destroy',['user'=>$value->id]) }}">
-                                                @csrf
-                                                @method('delete')
+                                        <form class="inline" method="POST"
+                                            onsubmit="return confirm('Yakin mau hapus data ini?')"
+                                            action="{{ route('member.users.destroy', ['user' => $value->id]) }}">
+                                            @csrf
+                                            @method('delete')
                                             <button type='submit' class='text-red-600 hover:text-red-400 px-2'>
                                                 hapus
                                             </button>
                                         </form>
                                     </td>
-                                    
+
                                 </tr>
                             @endforeach
                         </tbody>

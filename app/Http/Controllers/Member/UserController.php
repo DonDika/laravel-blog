@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -100,7 +101,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $posts = Post::where('user_id', $user->id)->get();
+        foreach($posts as $post){
+            if (file_exists(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION').'/'.$post->thumbnail )) &&
+                isset($post->thumbnail)
+            ) {
+                unlink(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION').'/'.$post->thumbnail));
+            }
+        }
+
+        User::where('id',$user->id)->delete();
+        return redirect()->back()->with('success','Data berhasil dihapus');
     }
 
 
