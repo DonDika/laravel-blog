@@ -51,8 +51,12 @@
                                         </div>
                                         <div class="block lg:hidden text-sm text-gray-500">
                                             Block:
-                                            <a href="">
-                                                <span class="text-blue-600">tidak</span>
+                                            <a href="{{ route('member.users.toggle-block',['user'=>$value->id]) }}">
+                                                @if ($value->blocked_at == null)
+                                                    <span class="text-blue-600">tidak</span>
+                                                @else
+                                                    <span class="text-red-600">ya</span>
+                                                @endif
                                             </a>
                                         </div>
                                     </td>
@@ -66,8 +70,12 @@
                                     </td>
 
                                     <td class="border px-6 py-4 text-gray-500 text-sm text-center hidden lg:table-cell">
-                                        <a href="">
-                                            <span class="text-blue-600">tidak</span>
+                                        <a href="{{ route('member.users.toggle-block',parameters: ['user'=>$value->id]) }}">
+                                            @if ($value->blocked_at == null)
+                                                <span class="text-blue-600">tidak</span>
+                                            @else 
+                                                <span class="text-red-600">ya</span>
+                                            @endif
                                         </a>
                                     </td>
 

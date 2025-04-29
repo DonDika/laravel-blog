@@ -61,6 +61,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'store' => 'member.users.store',
         'destroy' => 'member.users.destroy'
     ]);
+
+    //block user
+    Route::get('member/users/{user}/toggle-block',[UserController::class, 'toggleBlock'])->name('member.users.toggle-block');
 });
 
 
