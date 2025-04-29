@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -55,7 +56,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $userData = $user;
+        return view('member.users.edit', compact('userData'));
     }
 
     /**
@@ -63,7 +65,34 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'new_password' => 'nullable|min:8|same:new_password_confirmation|required_with:new_password_confirmation',
+            'new_password_confirmation' => 'required_with:new_password'
+
+        ],[
+            'name.required' => 'Nama tidak boleh kosong',
+            'email.required' => 'Email tidak boleh kosong',
+            'email.email' => 'Format email '.$request->email.' tidak sesuai',
+            'email.unique' => 'Email sudah digunakan, silahkan gunakan email yang lain',
+            'new_password.required_with' => 'Password belum diisi',
+            'new_password_confirmation.required_with' => 'Konfirmasi password belum diisi'
+        ]);
+
+        $verifiedEmail = $user->email_verified_at ? $user->email_verified_at : Carbon::now();
+
+        $updateData = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'email_verified_at' => $verifiedEmail,
+            'password' => $request->new_password ? bcrypt($request->new_password) : $user->password
+        ];
+
+        User::where('id', $user->id)
+                ->update($updateData);
+
+        return redirect()->route('member.users.index')->with('success','Berhasil memperbarui data');
     }
 
     /**
