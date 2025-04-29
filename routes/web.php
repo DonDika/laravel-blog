@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Member\BlogController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\Member\PageController;
 use App\Http\Controllers\Front\HomePageController;
 use App\Http\Controllers\Front\BlogDetailController;
 use App\Http\Controllers\Front\PageDetailController;
+use App\Http\Controllers\Member\UserController;
 
 
 Route::get('/',[HomePageController::class, 'index']);
@@ -49,6 +49,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ])
     ->parameters([
         'pages' => 'post'
+    ]);
+
+    //users route
+    Route::resource("/member/users", UserController::class)
+    ->names([
+        'index' => 'member.users.index',
+        'edit' => 'member.users.edit',
+        'update' => 'member.users.update',
+        'create' => 'member.users.create',
+        'store' => 'member.users.store',
+        'destroy' => 'member.users.destroy'
     ]);
 });
 
