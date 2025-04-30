@@ -19,12 +19,16 @@
                     <x-nav-link :href="route('member.blogs.index')" :active="request()->routeIs('member.blogs.*')">
                         Blogs
                     </x-nav-link>
-                    <x-nav-link :href="route('member.pages.index')" :active="request()->routeIs('member.pages.*')">
-                        Pages
-                    </x-nav-link>
-                    <x-nav-link :href="route('member.users.index')" :active="request()->routeIs('member.users.*')">
-                        Users
-                    </x-nav-link>
+                    @can('admin-pages')
+                        <x-nav-link :href="route('member.pages.index')" :active="request()->routeIs('member.pages.*')">
+                            Pages
+                        </x-nav-link>
+                    @endcan
+                    @can('admin-users')
+                        <x-nav-link :href="route('member.users.index')" :active="request()->routeIs('member.users.*')">
+                            Users
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -86,13 +90,17 @@
                 Blogs
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('member.pages.index')" :active="request()->routeIs('member.pages.*')">
-                Pages
-            </x-responsive-nav-link>
+            @can('admin-pages')
+                <x-responsive-nav-link :href="route('member.pages.index')" :active="request()->routeIs('member.pages.*')">
+                    Pages
+                </x-responsive-nav-link>
+            @endcan
 
-            <x-responsive-nav-link :href="route('member.users.index')" :active="request()->routeIs('member.users.*')">
-                Users
-            </x-responsive-nav-link>
+            @can('admin-users')
+                <x-responsive-nav-link :href="route('member.users.index')" :active="request()->routeIs('member.users.*')">
+                    Users
+                </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

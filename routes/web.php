@@ -49,7 +49,8 @@ Route::middleware(['auth', 'verified', 'blocked'])->group(function () {
     ])
     ->parameters([
         'pages' => 'post'
-    ]);
+    ])
+    ->middleware(['role_or_permission:admin-pages']);
 
     //users route
     Route::resource("/member/users", UserController::class)
@@ -60,7 +61,8 @@ Route::middleware(['auth', 'verified', 'blocked'])->group(function () {
         'create' => 'member.users.create',
         'store' => 'member.users.store',
         'destroy' => 'member.users.destroy'
-    ]);
+    ])
+    ->middleware(['role_or_permission:admin-users']);
 
     //block user
     Route::get('member/users/{user}/toggle-block',[UserController::class, 'toggleBlock'])->name('member.users.toggle-block');
