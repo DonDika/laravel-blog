@@ -43,6 +43,9 @@
                                 </td>
                                 <td class="border px-6 py-4">
                                     {{ $value->title }}
+                                    <div class="block text-sm text-gray-500">
+                                        penulis : {{ $value->user->name }}
+                                    </div>
                                     <div class="block lg:hidden text-sm text-gray-500">
                                         {{ $value->status }} | {{ $value->created_at->isoFormat('dddd, D MMMM Y') }}
                                     </div>

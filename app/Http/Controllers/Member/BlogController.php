@@ -24,8 +24,8 @@ class BlogController extends Controller
         $user = Auth::user();
         $search = $request->search;
 
-        $postData = Post::where('user_id',$user->id)
-                ->where('type',$this->type)
+        if ($user->can('admin-blogs')) {
+            $postData = Post::where('type',$this->type)
                 ->where(function($query) use ($search){
                     if($search){
                         $query->where('title', 'like', "%{$search}%")
@@ -35,6 +35,20 @@ class BlogController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate(10)
                 ->withQueryString();
+        } else {
+            $postData = Post::where('user_id',$user->id)
+                    ->where('type',$this->type)
+                    ->where(function($query) use ($search){
+                        if($search){
+                            $query->where('title', 'like', "%{$search}%")
+                                    ->orWhere('content', 'like',"%{$search}%");
+                        }
+                    })
+                    ->orderBy('id', 'desc')
+                    ->paginate(10)
+                    ->withQueryString();
+        }
+        
          
         return view('member.blogs.index', compact('postData'));
     }
