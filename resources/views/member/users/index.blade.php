@@ -44,6 +44,13 @@
                                     <td class="border px-6 py-4">
                                         <div>{{ $value->name }}</div>
                                         <div class="text-sm text-gray-500">{{ $value->email }}</div>
+                                        @if ($value->permissions->isEmpty() == false)
+                                            <div class="text-sm text-gray-500"><b>Hak akses: </b>
+                                                {{ $value->permissions->pluck('name')->implode(', ') }}
+                                            </div>
+                                        @endif
+                                        
+                                        
                                         <div class="block lg:hidden text-sm text-gray-500">
                                             {{ $value->created_at->isoFormat('dddd, D MMMM Y') }}
                                             | verifikasi email: {{ $value->email_verified_at != null ? 'sudah' : '-' }}

@@ -65,6 +65,24 @@
                                     class="mt-1 block w-full" />
                             </div>
 
+                            <header>
+                                <h2 class="text-lg font-medium text-gray-900">
+                                    Permission
+                                </h2>
+                                <p class="mt-1 text-sm text-gray-600">
+                                    Silahkan tentukan permission untuk pengguna
+                                </p>
+                            </header>
+                            @foreach ($permissions as $key => $value)
+                                <div>
+                                    <input type="checkbox" class="border-gray-300 rounded-md" name="permissions[]" 
+                                    value="{{ $value->name }}" {{ 
+                                        (old('permissions', $userPermissions) && in_array($value->name, old('permissions', $userPermissions)))?'checked':''
+                                    }} />
+                                    <x-input-label for="permissions" value="{{ $value->name }}" class="inline" />
+                                </div>
+                            @endforeach
+
                             <div class="flex items-center gap-4">
                                 <a href="{{ route('member.users.index') }}">
                                     <x-secondary-button>Kembali</x-secondary-button>

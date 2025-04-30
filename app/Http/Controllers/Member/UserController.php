@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Member;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\User;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -33,7 +35,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('member.users.create');
+        $userPermissions = Permission::get();
+
+        return view('member.users.create', compact('userPermissions'));
     }
 
     /**
@@ -65,7 +69,11 @@ class UserController extends Controller
             'password' => bcrypt($request->password)
         ];
 
-        User::create($createUserData);
+        // to get id
+        $addNewUser = User::create($createUserData);
+
+        // add permission
+        $addNewUser->syncPermissions($request->permissions);
 
         return redirect()->route('member.users.index')->with('success','Data user berhasil ditambahkan');
 
@@ -85,8 +93,13 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+
+        $permissions = Permission::get();
+        //Debugbar::info($permission);
+        $userPermissions = $user->getPermissionNames()->toArray();
         $userData = $user;
-        return view('member.users.edit', compact('userData'));
+
+        return view('member.users.edit', compact('userData','permissions','userPermissions'));
     }
 
     /**
@@ -120,6 +133,12 @@ class UserController extends Controller
 
         User::where('id', $user->id)
                 ->update($updateData);
+
+
+        $user->syncPermissions($request->permissions);
+
+        //dd($request->permissions);
+        
 
         return redirect()->route('member.users.index')->with('success','Berhasil memperbarui data');
     }
