@@ -24,7 +24,6 @@
 
                 <div class="p-6 bg-white border-b border-gray-200">
                     <table class="w-full whitespace-no-wrapw-full whitespace-no-wrap table-fixed">
-
                         <thead>
                             <tr class="text-center font-bold">
                                 <td class="border px-6 py-4 w-[80px]">No</td>
@@ -34,7 +33,6 @@
                                 <td class="border px-6 py-4 lg:w-[250px] w-[100px]">Aksi</td>
                             </tr>
                         </thead>
-
                         <tbody>
                             @foreach ($postData as $key => $value)
                             <tr>
@@ -80,7 +78,6 @@
                             </tr>
                             @endforeach
                         </tbody>
-
                     </table>
                 </div>
 
