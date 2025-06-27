@@ -1,0 +1,41 @@
+name: Update Laravel App on Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Update via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            echo "📁 Pindah ke direktori project"
+            cd ~/apps/laravel-blog
+
+            echo "🔄 Git pull"
+            git pull origin main
+            git status
+
+            echo "🐳 Cari container Laravel"
+            CONTAINER=$(docker ps -qf "name=laravel-blog-app-1")
+
+            echo "📋 Update .env dari secret"
+            docker exec -i $CONTAINER sh -c 'cat > .env' << 'EOF'
+            ${{ secrets.LARAVEL_ENV }}
+            EOF
+
+            echo "📦 Composer install"
+            docker exec -t $CONTAINER composer install --no-interaction --prefer-dist --optimize-autoloader
+
+            echo "🗃️ Migrate"
+            docker exec -t $CONTAINER php artisan migrate --force
+
+            echo "✅ Update selesai!"
