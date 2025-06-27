@@ -35,7 +35,7 @@
     @include('components.front.navigation')
 
     <!-- Page Header -->
-    {{-- @isset($pageHeader)
+    @isset($pageHeader)
         <header class="masthead" style="background-image: url('{{ $pageBackground }}')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </header>
-    @endisset --}}
+    @endisset
 
     <!-- Main Content-->
     {{ $slot }}
