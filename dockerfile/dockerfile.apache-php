@@ -37,6 +37,11 @@ RUN echo "memory_limit=512M" >> /etc/php/8.3/apache2/conf.d/99-custom.ini \
     && echo "allow_url_fopen=On" >> /etc/php/8.3/apache2/conf.d/99-custom.ini \
     && echo "error_reporting=E_ALL & ~E_NOTICE" >> /etc/php/8.3/apache2/conf.d/99-custom.ini
 
+# install Node.js 22 dan update npm
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest
+
 # aktifkan mod rewrite apache
 RUN a2enmod rewrite
 
